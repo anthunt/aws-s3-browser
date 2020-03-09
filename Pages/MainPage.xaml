@@ -1,0 +1,131 @@
+﻿<Page x:Class="S3Browser.Pages.MainPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:local="clr-namespace:S3Browser"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="S3Browser"
+        Initialized="Window_Initialized">
+    <Grid>
+
+        <Grid x:Name="SpinnerFrame" Margin="0,0,0,0" Panel.ZIndex="2" Background="Black" Opacity="0.1" Visibility="Hidden">
+            <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="2" Foreground="White" Width="100" Height="100"/>
+        </Grid>
+        
+        <Grid Margin="0,0,0,0" Panel.ZIndex="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Menu Width="Auto" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="0">
+                <MenuItem Header="Menu" Click="MenuItem_Click"/>
+            </Menu>
+
+            <StackPanel Margin="20,10" Orientation="Horizontal" Grid.Row="1">
+                <Label Content="Region : " HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="regionComboBox" DisplayMemberPath="DisplayName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="222" SelectionChanged="RegionComboBox_SelectionChanged"/>
+
+                <Label Content="Profile : " HorizontalAlignment="Left" Margin="40,0,0,0"  VerticalAlignment="Top"/>
+                <ComboBox x:Name="profileComboBox" DisplayMemberPath="Name" HorizontalAlignment ="Left" VerticalAlignment="Top" Width="120" SelectionChanged="ProfileComboBox_SelectionChanged" RenderTransformOrigin="0.052,0.348"/>
+            </StackPanel>
+        
+            <DockPanel Margin="20,10,20,10" Grid.Row="2">
+            
+                <materialDesign:Card Padding="10" Background="White" Margin="0,0,0,0" HorizontalAlignment="Left" MinWidth="250" Width="Auto">
+                    <ListView x:Name="bucketList" Margin="0,10,4,7" SelectionChanged="BucketList_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Bucket" Width="Auto"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </materialDesign:Card>
+                
+                <materialDesign:Card Padding="10" Background="White" Margin="20,0,0,0" Width="Auto" DockPanel.Dock="Right">
+                    <Grid x:Name="objectListGrid">
+                        <StackPanel x:Name="navigationPanel" Margin="0,0,0,244" MinHeight="60" Height="Auto" CanHorizontallyScroll="True" Orientation="Horizontal">
+                        </StackPanel>
+                        <ListView x:Name="objectList" Margin="0,56,4,7" AllowDrop="True" MouseDoubleClick="ObjectList_MouseDoubleClick" PreviewDrop="ObjectList_PreviewDrop" SelectionChanged="ObjectList_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Key" DisplayMemberBinding="{Binding Path=Key}" Width="0"/>
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumn.Header>
+                                            <CheckBox/>
+                                        </GridViewColumn.Header>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Name" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="20" Height="20" Margin="0,0,10,0" Source="{Binding Path=Image}"/>
+                                                    <TextBlock Text="{Binding Path=Name}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Path=Size}" Width="Auto"/>
+                                    <GridViewColumn Header="Storage class" DisplayMemberBinding="{Binding Path=StorageClass}" Width="Auto"/>
+                                    <GridViewColumn Header="Last modified" DisplayMemberBinding="{Binding Path=LastModified}" Width="Auto"/>
+                                    <GridViewColumn Header="Action" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Hyperlink Tag="{Binding Path=Key}" Click="Hyperlink_Click">Delete</Hyperlink>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </materialDesign:Card>
+                
+            </DockPanel>
+
+        </Grid>
+
+        <materialDesign:Card x:Name="ObjectInfoPanel" Background="White" Margin="0,105,0,0" Padding="10" Width="270" Height="300" HorizontalAlignment="Right" Visibility="Hidden" Panel.ZIndex="1000">
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <Label HorizontalAlignment="Right">
+                        <Hyperlink fa:Awesome.Content="Close" Click="Hyperlink_Click_1"/>
+                    </Label>
+                    <Label FontWeight="Bold">Bucket Name</Label>
+                    <Label Margin="20,0,20,0">
+                        <TextBlock TextWrapping="Wrap">cns-demo-s3</TextBlock>
+                    </Label>
+                    <Label FontWeight="Bold">Key</Label>
+                    <Label Margin="20,0,20,0">
+                        <TextBlock TextWrapping="Wrap">.jpgasdfsadfasfasdfsfsfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasf</TextBlock>
+                    </Label>
+                    <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button fa:Awesome.Content="Download" ToolTip="Download object"/>
+                        <Button fa:Awesome.Content="Copy" Margin="20,0,0,0" ToolTip="Copy object url"/>
+                        <Button fa:Awesome.Content="Trash" Margin="20,0,0,0" ToolTip="Delete object"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+        
+    </Grid>
+
+</Page>
