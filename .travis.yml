@@ -1,2 +1,3 @@
 language: csharp
 solution: S3Browser.sln
+dotnet: 4.7.2
