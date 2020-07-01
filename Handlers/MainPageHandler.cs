@@ -125,7 +125,7 @@ namespace S3Browser.Handlers
         {
             var key = hyperlink.Tag.ToString();
 
-            var result = MessageBox.Show("삭제 하시겠습니까?", "Object 삭제", MessageBoxButton.OKCancel);
+            var result = MessageBox.Show("want to delete?", "Object delete", MessageBoxButton.OKCancel);
 
             if (result == MessageBoxResult.OK)
             {
@@ -150,7 +150,7 @@ namespace S3Browser.Handlers
                     var file = files[0];
                     System.Diagnostics.Debug.WriteLine(file);
 
-                    var result = MessageBox.Show("KMS Key로 암호화 하시겠습니까?", "선택", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                    var result = MessageBox.Show("want to encrypt with KMS Key?", "Selection", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
                     if (result == MessageBoxResult.Yes)
                     {
