@@ -103,7 +103,7 @@ namespace S3Browser.Handlers
 
             var encRequest = new EncryptRequest
             {
-                KeyId = "arn:aws:kms:ap-northeast-2:677963422510:key/4fcb8b76-e1fe-4b5d-90b0-37c3e6dd5e4c"
+                KeyId = "Have to Insert KeyArn.."
                 ,
                 Plaintext = memoryStream
             };
